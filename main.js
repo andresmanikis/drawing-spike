@@ -4,10 +4,9 @@ import { onMouseDelta } from "./onMouseDelta.js";
 const box = new Box(200, 100);
 
 onMouseDelta((deltaX, deltaY) => {
-  if (box.moving) {
-    box.x += deltaX;
-    box.y += deltaY;
+  box.handleMouseDelta(deltaX, deltaY);
+});
 
-    box.update();
-  }
+document.addEventListener("mouseup", () => {
+  box.stopInteractions();
 });
