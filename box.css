@@ -5,3 +5,15 @@
   position: fixed;
   cursor: move;
 }
+
+.box__handle-right {
+  width: 10px;
+  height: 10px;
+  border: 1px solid white;
+  background-color: green;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  transform: translate(50%, -50%);
+  cursor: e-resize;
+}

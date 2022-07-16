@@ -4,19 +4,28 @@ export class Box {
     this.y = y;
     this.moving = false;
     this.createElement();
-
-    this.el.addEventListener("mousedown", () => (this.moving = true));
-    this.el.addEventListener("mouseup", () => (this.moving = false));
   }
 
   createElement() {
-    const el = document.createElement("div");
-    el.className = "box";
-    el.style.left = this.x;
-    el.style.top = this.y;
-    this.el = el;
+    const boxEl = document.createElement("div");
 
-    document.body.appendChild(el);
+    boxEl.className = "box";
+    boxEl.style.left = this.x;
+    boxEl.style.top = this.y;
+
+    const handleEl = document.createElement("div");
+    handleEl.className = "box__handle-right";
+
+    boxEl.addEventListener("mousedown", () => (this.moving = true));
+    boxEl.addEventListener("mouseup", () => (this.moving = false));
+
+    handleEl.addEventListener("mousedown", (e) => e.stopPropagation());
+    handleEl.addEventListener("mouseup", (e) => e.stopPropagation());
+
+    boxEl.appendChild(handleEl);
+    document.body.appendChild(boxEl);
+
+    this.el = boxEl;
   }
 
   update() {
