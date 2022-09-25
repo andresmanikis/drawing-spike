@@ -1,13 +1,18 @@
 export function onMouseDelta(callback) {
-  let prevMouseX = 0;
-  let prevMouseY = 0;
+  let prevMouseX = null;
+  let prevMouseY = null;
 
-  document.addEventListener("mousedown", (e) => {
-    prevMouseX = e.clientX;
-    prevMouseY = e.clientY;
-  });
+  function isInitialized() {
+    return prevMouseX !== null && prevMouseY !== null;
+  }
 
   document.addEventListener("mousemove", (e) => {
+    if (!isInitialized()) {
+      prevMouseX = e.clientX;
+      prevMouseY = e.clientY;
+      return;
+    }
+
     const deltaX = e.clientX - prevMouseX;
     const deltaY = e.clientY - prevMouseY;
 
