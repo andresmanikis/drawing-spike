@@ -9,13 +9,15 @@ onMouseDelta((deltaX, deltaY) => {
   if (!movingObject) return;
 
   movingObject.move(deltaX, deltaY);
-  movingObject.draw();
+  movingObject.draw(document.body);
 });
 
 boxes.forEach((box) => {
   box.onMouseDown(() => {
     movingObject = box;
   });
+
+  box.draw(document.body);
 });
 
 document.addEventListener("mouseup", () => {

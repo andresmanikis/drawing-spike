@@ -34,12 +34,14 @@ export class Box {
       this.#mouseDownCallback();
     });
 
-    document.body.appendChild(boxEl);
-
     this.el = boxEl;
   }
 
-  draw() {
+  draw(body) {
+    if (!body.contains(this.el)) {
+      body.appendChild(this.el);
+    }
+
     this.el.style.left = this.#x;
     this.el.style.top = this.#y;
   }
