@@ -6,7 +6,9 @@ const boxes = [new Box(200, 100), new Box(400, 200)];
 let movingObject = null;
 
 onMouseDelta((deltaX, deltaY) => {
-  movingObject?.move(deltaX, deltaY);
+  if (!movingObject) return;
+
+  movingObject.move(deltaX, deltaY);
   movingObject.draw();
 });
 
