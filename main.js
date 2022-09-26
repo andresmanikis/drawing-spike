@@ -3,18 +3,19 @@ import { onMouseDelta } from "./onMouseDelta.js";
 
 const boxes = [new Box(200, 100), new Box(400, 200)];
 
-let interactingObject = null;
+let movingObject = null;
 
 onMouseDelta((deltaX, deltaY) => {
-  interactingObject?.move(deltaX, deltaY);
+  movingObject?.move(deltaX, deltaY);
+  movingObject.draw();
 });
 
 boxes.forEach((box) => {
   box.onMouseDown(() => {
-    interactingObject = box;
+    movingObject = box;
   });
 });
 
 document.addEventListener("mouseup", () => {
-  interactingObject = null;
+  movingObject = null;
 });

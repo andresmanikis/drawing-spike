@@ -19,8 +19,6 @@ export class Box {
   move(deltaX, deltaY) {
     this.#x += deltaX;
     this.#y += deltaY;
-
-    this.update();
   }
 
   createElement() {
@@ -41,7 +39,7 @@ export class Box {
     this.el = boxEl;
   }
 
-  update() {
+  draw() {
     this.el.style.left = this.#x;
     this.el.style.top = this.#y;
   }
