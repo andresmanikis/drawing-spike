@@ -23,6 +23,9 @@ export class Box {
   move(deltaX, deltaY) {
     this.#x += deltaX;
     this.#y += deltaY;
+
+    this.el.style.left = this.#x - this.#width / 2;
+    this.el.style.top = this.#y - this.#height / 2;
   }
 
   createElement() {
@@ -39,14 +42,6 @@ export class Box {
     });
 
     this.el = boxEl;
-  }
-
-  draw(body) {
-    if (!body.contains(this.el)) {
-      body.appendChild(this.el);
-    }
-
-    this.el.style.left = this.#x - this.#width / 2;
-    this.el.style.top = this.#y - this.#height / 2;
+    document.body.appendChild(boxEl);
   }
 }

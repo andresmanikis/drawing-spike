@@ -2,6 +2,7 @@
   border: 1px solid lightgreen;
   position: fixed;
   z-index: 1;
+  cursor: move;
 }
 
 .handles .handles__handle {

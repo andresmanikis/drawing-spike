@@ -1,8 +1,17 @@
 export class Handles {
   #el;
+  #x;
+  #y;
+  #width;
+  #height;
+  #mouseDown;
 
-  constructor(x, y, width, height) {
+  constructor(x, y, width, height, box) {
     const el = createBoundingBox(x, y, width, height);
+
+    el.addEventListener("mousedown", () => {
+      this.#mouseDown();
+    });
 
     addTopHandle(el);
     addRightHandle(el);
@@ -12,6 +21,23 @@ export class Handles {
     document.body.appendChild(el);
 
     this.#el = el;
+    this.#x = x;
+    this.#y = y;
+    this.#width = width;
+    this.#height = height;
+    this.box = box;
+  }
+
+  onMouseDown(callback) {
+    this.#mouseDown = callback;
+  }
+
+  move(deltaX, deltaY) {
+    this.#x += deltaX;
+    this.#y += deltaY;
+
+    this.#el.style.left = this.#x - this.#width / 2;
+    this.#el.style.top = this.#y - this.#height / 2;
   }
 
   remove() {

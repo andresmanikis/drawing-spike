@@ -3,28 +3,29 @@ import { Handles } from "./Handles.js";
 import { onMouseDelta } from "./onMouseDelta.js";
 
 const boxes = [new Box(200, 100), new Box(400, 200)];
-// const handles = new Handles(200, 100, 100, 100);
 
-let movingObject = null;
 let handles = null;
+let leftPressed = false;
 
 onMouseDelta((deltaX, deltaY) => {
-  if (!movingObject) return;
+  if (!leftPressed) return;
+  if (!handles) return;
 
-  movingObject.move(deltaX, deltaY);
-  movingObject.draw(document.body);
+  handles.move(deltaX, deltaY);
+  handles.box.move(deltaX, deltaY);
 });
 
 boxes.forEach((box) => {
   box.onMouseDown(() => {
     handles?.remove();
     const { x, y, width, height } = box.getBoundingBox();
-    handles = new Handles(x, y, width, height);
-  });
+    handles = new Handles(x, y, width, height, box);
+    leftPressed = true;
 
-  box.draw(document.body);
+    handles.onMouseDown(() => (leftPressed = true));
+  });
 });
 
 document.addEventListener("mouseup", () => {
-  movingObject = null;
+  leftPressed = false;
 });
