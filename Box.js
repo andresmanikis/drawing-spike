@@ -12,6 +12,10 @@ export class Box {
     this.createElement();
   }
 
+  getBoundingBox() {
+    return { x: this.#x, y: this.#y, width: this.#width, height: this.#height };
+  }
+
   onMouseDown(mouseDownCallback) {
     this.#mouseDownCallback = mouseDownCallback;
   }

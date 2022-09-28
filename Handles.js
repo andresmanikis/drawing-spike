@@ -1,4 +1,6 @@
 export class Handles {
+  #el;
+
   constructor(x, y, width, height) {
     const el = createBoundingBox(x, y, width, height);
 
@@ -8,6 +10,12 @@ export class Handles {
     addLeftHandle(el);
 
     document.body.appendChild(el);
+
+    this.#el = el;
+  }
+
+  remove() {
+    document.body.removeChild(this.#el);
   }
 }
 
