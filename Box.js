@@ -5,11 +5,11 @@ export class Box {
   #width = 100;
   #height = 100;
 
-  constructor(x, y) {
+  constructor(x, y, color) {
     this.#x = x;
     this.#y = y;
 
-    this.createElement();
+    this.createElement(color);
   }
 
   getBoundingBox() {
@@ -28,9 +28,10 @@ export class Box {
     this.el.style.top = this.#y - this.#height / 2;
   }
 
-  createElement() {
+  createElement(color) {
     const boxEl = document.createElement("div");
 
+    boxEl.style.backgroundColor = color;
     boxEl.className = "box";
     boxEl.style.left = this.#x - this.#width / 2;
     boxEl.style.top = this.#y - this.#height / 2;

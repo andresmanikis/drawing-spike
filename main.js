@@ -2,7 +2,7 @@ import { Box } from "./Box.js";
 import { Handles } from "./Handles.js";
 import { onMouseDelta } from "./onMouseDelta.js";
 
-const boxes = [new Box(200, 100), new Box(400, 200)];
+const boxes = [new Box(200, 100, "blue"), new Box(400, 200, "green")];
 
 let handles = null;
 let leftPressed = false;
@@ -17,12 +17,13 @@ onMouseDelta((deltaX, deltaY) => {
 
 boxes.forEach((box) => {
   box.onMouseDown(() => {
-    handles?.remove();
-    handles = null;
-    const { x, y, width, height } = box.getBoundingBox();
-    handles = new Handles(x, y, width, height, box);
     leftPressed = true;
 
+    handles?.remove();
+    handles = null;
+
+    const { x, y, width, height } = box.getBoundingBox();
+    handles = new Handles(x, y, width, height, box);
     handles.onMouseDown(() => (leftPressed = true));
   });
 });
