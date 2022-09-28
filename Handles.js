@@ -4,13 +4,42 @@ export class Handles {
   #y;
   #width;
   #height;
-  #mouseDown;
+  #shape;
 
-  constructor(x, y, width, height, box) {
+  constructor(shape) {
+    this.#shape = shape;
+    const { x, y, width, height } = shape.getBoundingBox();
     const el = createBoundingBox(x, y, width, height);
 
     el.addEventListener("mousedown", () => {
-      this.#mouseDown();
+      let prevX = null;
+      let prevY = null;
+
+      const handleMouseMove = (e) => {
+        if (!prevX || !prevY) {
+          prevX = e.clientX;
+          prevY = e.clientY;
+
+          return;
+        }
+
+        const dx = e.clientX - prevX;
+        const dy = e.clientY - prevY;
+
+        prevX = e.clientX;
+        prevY = e.clientY;
+
+        this.move(dx, dy);
+      };
+
+      document.addEventListener("mousemove", handleMouseMove);
+
+      const handleMouseUp = () => {
+        document.removeEventListener("mouseup", handleMouseUp);
+        document.removeEventListener("mousemove", handleMouseMove);
+      };
+
+      document.addEventListener("mouseup", handleMouseUp);
     });
 
     addTopHandle(el);
@@ -25,19 +54,16 @@ export class Handles {
     this.#y = y;
     this.#width = width;
     this.#height = height;
-    this.box = box;
   }
 
-  onMouseDown(callback) {
-    this.#mouseDown = callback;
-  }
-
-  move(deltaX, deltaY) {
-    this.#x += deltaX;
-    this.#y += deltaY;
+  move(dx, dy) {
+    this.#x += dx;
+    this.#y += dy;
 
     this.#el.style.left = this.#x - this.#width / 2;
     this.#el.style.top = this.#y - this.#height / 2;
+
+    this.#shape.move(dx, dy);
   }
 
   remove() {
@@ -62,6 +88,10 @@ function addTopHandle(el) {
   handle.style.top = -5;
   handle.style.left = parseInt(el.style.width) / 2 - 5;
   handle.style.cursor = "ns-resize";
+
+  handle.addEventListener("mousedown", () => {
+    console.log("top");
+  });
 
   el.appendChild(handle);
 }
