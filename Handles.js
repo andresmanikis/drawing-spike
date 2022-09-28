@@ -5,58 +5,54 @@ export class Handles {
   #width;
   #height;
   #shape;
+  #prevX;
+  #prevY;
 
   constructor(shape) {
-    this.#shape = shape;
     const { x, y, width, height } = shape.getBoundingBox();
-    const el = createBoundingBox(x, y, width, height);
 
-    el.addEventListener("mousedown", () => {
-      let prevX = null;
-      let prevY = null;
-
-      const handleMouseMove = (e) => {
-        if (!prevX || !prevY) {
-          prevX = e.clientX;
-          prevY = e.clientY;
-
-          return;
-        }
-
-        const dx = e.clientX - prevX;
-        const dy = e.clientY - prevY;
-
-        prevX = e.clientX;
-        prevY = e.clientY;
-
-        this.move(dx, dy);
-      };
-
-      document.addEventListener("mousemove", handleMouseMove);
-
-      const handleMouseUp = () => {
-        document.removeEventListener("mouseup", handleMouseUp);
-        document.removeEventListener("mousemove", handleMouseMove);
-      };
-
-      document.addEventListener("mouseup", handleMouseUp);
-    });
-
-    addTopHandle(el);
-    addRightHandle(el);
-    addBottomHandle(el);
-    addLeftHandle(el);
-
-    document.body.appendChild(el);
-
-    this.#el = el;
+    this.#el = render(x, y, width, height);
     this.#x = x;
     this.#y = y;
     this.#width = width;
     this.#height = height;
+    this.#shape = shape;
+
+    this.#handleMouseDown();
   }
 
-  move(dx, dy) {
+  #handleMouseDown = () => {
+    this.#prevX = null;
+    this.#prevY = null;
+
+    document.addEventListener("mousemove", this.#handleMouseMove);
+    document.addEventListener("mouseup", this.#handleMouseUp);
+  };
+
+  #handleMouseUp = () => {
+    this.#el.addEventListener("mousedown", this.#handleMouseDown);
+    document.removeEventListener("mouseup", this.#handleMouseUp);
+    document.removeEventListener("mousemove", this.#handleMouseMove);
+  };
+
+  #handleMouseMove = (e) => {
+    if (!this.#prevX || !this.#prevY) {
+      this.#prevX = e.clientX;
+      this.#prevY = e.clientY;
+
+      return;
+    }
+
+    const dx = e.clientX - this.#prevX;
+    const dy = e.clientY - this.#prevY;
+
+    this.#prevX = e.clientX;
+    this.#prevY = e.clientY;
+
+    this.#move(dx, dy);
+  };
+
+  #move(dx, dy) {
     this.#x += dx;
     this.#y += dy;
 
@@ -69,6 +65,17 @@ export class Handles {
   remove() {
     document.body.removeChild(this.#el);
   }
+}
+
+function render(x, y, width, height) {
+  const el = createBoundingBox(x, y, width, height);
+  addTopHandle(el);
+  addRightHandle(el);
+  addBottomHandle(el);
+  addLeftHandle(el);
+  document.body.appendChild(el);
+
+  return el;
 }
 
 function createBoundingBox(x, y, width, height) {
