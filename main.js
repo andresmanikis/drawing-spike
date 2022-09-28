@@ -18,6 +18,7 @@ onMouseDelta((deltaX, deltaY) => {
 boxes.forEach((box) => {
   box.onMouseDown(() => {
     handles?.remove();
+    handles = null;
     const { x, y, width, height } = box.getBoundingBox();
     handles = new Handles(x, y, width, height, box);
     leftPressed = true;
@@ -28,4 +29,11 @@ boxes.forEach((box) => {
 
 document.addEventListener("mouseup", () => {
   leftPressed = false;
+});
+
+document.addEventListener("mousedown", (e) => {
+  if (e.target === document.body) {
+    handles?.remove();
+    handles = null;
+  }
 });
