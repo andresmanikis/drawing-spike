@@ -1,5 +1,13 @@
 .handles {
-  border: 1px solid green;
+  border: 1px solid lightgreen;
   position: fixed;
   z-index: 1;
+}
+
+.handles .handles__handle {
+  width: 10px;
+  height: 10px;
+  background-color: green;
+  position: absolute;
+  border: 1px solid white;
 }
